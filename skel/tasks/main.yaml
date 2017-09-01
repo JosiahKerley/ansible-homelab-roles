@@ -1,0 +1,21 @@
+- name: Begin role
+  include: begin/main.yaml
+  tags:
+    - always
+    - begin
+
+- name: Install packages
+  include: packages/main.yaml
+  tags:
+    - packages
+
+- name: Setup configurations
+  include: configs/main.yaml
+  tags:
+    - config
+
+- name: Finish role
+  include: finish/main.yaml
+  tags:
+    - always
+    - finish

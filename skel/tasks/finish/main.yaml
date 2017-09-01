@@ -1,0 +1,10 @@
+- include: raspbian.yaml
+  when: "ansible_lsb.id == 'Raspbian'"
+
+- include: debian.yaml
+  when: "ansible_os_family == 'Debian' and not ansible_lsb.id == 'Raspbian'"
+
+- include: rhel.yaml
+  when: "ansible_os_family == 'RedHat'"
+
+- meta: flush_handlers

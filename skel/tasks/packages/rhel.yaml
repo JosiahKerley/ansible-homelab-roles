@@ -1,0 +1,20 @@
+- name: Check for update package flag
+  stat:
+    path: /var/lib/ansible/flags/package-update.flag
+  register: update_flag
+
+- name: Update all packages to the latest version
+  yum:
+    name: '*'
+    state: latest
+    update_cache: true
+  when: not update_flag.stat.exists
+  notify:
+    - Create update flag
+
+- name: Install base packages
+  package:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - epel-release

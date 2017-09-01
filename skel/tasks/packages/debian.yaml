@@ -1,0 +1,12 @@
+- name: Check for update package flag (Debian)
+  stat:
+    path: /var/lib/ansible/flags/package-update.flag
+  register: update_flag
+
+- name: Update all packages to the latest version (Debian)
+  apt:
+    upgrade: dist
+    update_cache: yes
+  when: not update_flag.stat.exists
+  notify:
+    - Create update flag

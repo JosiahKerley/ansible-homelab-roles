@@ -1,0 +1,25 @@
+- name: Create directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - /var
+    - /var/lib
+    - /var/lib/ansible
+    - /var/lib/ansible/flags
+
+- name: Clear package flag
+  file:
+    path: /var/lib/ansible/flags/package-update.flag
+    state: absent
+  when: FORCE is defined and FORCE == true
+
+- include: raspbian.yaml
+  when: "ansible_lsb.id == 'Raspbian'"
+
+- include: debian.yaml
+  when: "ansible_os_family == 'Debian' and not ansible_lsb.id == 'Raspbian'"
+
+- include: rhel.yaml
+  when: "ansible_os_family == 'RedHat'"
+
